@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="jQuery.js"></script>
+</head>
+<style>
+    .box{
+        width: 500px;
+        height: 300px;
+        margin: 0 auto;
+        position: relative;
+        border: 1px solid red;
+    }
+    .son{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top:0;
+        left:0;
+        background-color: #f0f0f0;
+        line-height: 300px;
+        text-align: center;
+        font-size: 40px;
+    }
+    .boasdjb{
+        width: 500px;
+        height: 300px;
+        position: absolute;
+        top:0;
+        left:0;
+        z-index: 999;
+        background-color: rgba(0,0,0,.2);
+    }
+    .son:nth-child(1){
+        background-color: red;
+    }
+    .son:nth-child(2){
+        background-color: green;
+    }
+    .son:nth-child(3){
+        background-color: grey;
+    }
+    .son:nth-child(4){
+        background-color: yellow;
+    }
+    .son:nth-child(5){
+        background-color: pink;
+    }
+</style>
+<body>
+<div class="box">
+    <div class="son"></div>
+    <div class="son"></div>
+    <div class="son"></div>
+    <div class="son"></div>
+    <div class="son"></div>
+    <div class="boasdjb"></div>
+</div>
+</body>
+<script>
+    let box1 = $(".box");
+    let img1 = $(".son");
+    let con1 = $(".boasdjb");
+    let next = prev = 0;
+    img1.not(":first").css("left","500px");
+    function run1(type = 0) {
+        if (type == 0){
+            next += 1;
+            if (next>=img1.length){
+                next=0;
+            }
+            img1.eq(prev).css("left","0").animate({"left":"-500px"},500);
+            img1.eq(next).css("left","500px").animate({"left":"0px"},500);
+            prev = next;
+        }else{
+            next-=1;
+            if(next<0){
+                next=img1.length-1
+            }
+            img1.eq(prev).css("left","0").animate({"left":"500px"},500);
+            img1.eq(next).css("left","-500px").animate({"left":"0"},500);
+            prev = next;
+        }
+    }
+    console.log(con1);
+
+    let flag = true;
+ con1.mousedown(function(ev) {
+        let left = ev.clientX;
+        console.log(left);
+        con1.mousemove (function (event) {
+            let left2 = event.clientX;
+            if (left2-left>-50) {
+                flag = false;
+            }
+            if (left2-left<50){
+                 flag = true;
+            }
+        });
+ });
+        con1.mouseup ( function () {
+            if (flag){
+                run1()
+            } else{
+                run1(1)
+            }
+        con1.mousemove = null;
+    });
+
+    let t1 = setInterval(run1,2000);
+    box1.hover(function(){
+        clearInterval(t1)
+    },function(){
+        t1 = setInterval(run1,2000);
+
+    });
+
+
+</script>
+
+
+</html>
